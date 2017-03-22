@@ -1,0 +1,1 @@
+SELECT firstname, lastname, tagname FROM users WHERE tagname LIKE $1

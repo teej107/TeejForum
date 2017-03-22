@@ -1,0 +1,13 @@
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY NOT NULL,
+  firstname CHARACTER VARYING(100) NOT NULL,
+  lastname CHARACTER VARYING(100) NOT NULL,
+  tagname CHARACTER VARYING(100) NOT NULL
+);
+
+CREATE TABLE public.sections
+(
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    description VARCHAR(255)
+);

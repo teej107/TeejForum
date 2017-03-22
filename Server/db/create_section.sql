@@ -1,0 +1,1 @@
+INSERT INTO sections (name, description) VALUES ($1, $2)
