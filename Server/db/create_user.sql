@@ -1,1 +1,1 @@
-INSERT INTO users (firstname, lastname, tagname) VALUES ($1, $2, $3)
+INSERT INTO users (firstname, lastname, tagname, avatar) VALUES ($1, $2, $3, $4)

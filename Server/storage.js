@@ -10,10 +10,10 @@ module.exports = function ()
 {
     return {
         users: {
-            createUser: function (firstName, lastName, tagname)
+            createUser: function (firstName, lastName, tagname, avatar)
             {
                 var promise = new Promise();
-                db.create_user([firstName, lastName, tagname], function (err)
+                db.create_user([firstName, lastName, tagname, avatar], function (err)
                 {
                     promise.resolve();
                 });
@@ -30,10 +30,10 @@ module.exports = function ()
             }
         },
         sections: {
-            createSection: function (title, description)
+            createSection: function (title, description, subsection_id)
             {
                 var promise = new Promise();
-                db.create_section([title, description], function (err)
+                db.create_section([title, description, subsection_id], function (err)
                 {
                     promise.resolve();
                 });
