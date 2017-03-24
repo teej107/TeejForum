@@ -6,48 +6,49 @@ var db = massive.connectSync({
     connectionString: 'postgres://postgres:tanner@localhost/teejforum'
 });
 
-module.exports = function ()
-{
-    return {
-        users: {
-            createUser: function (firstName, lastName, tagname, avatar)
-            {
-                var promise = new Promise();
+module.exports = {
+    users: {
+        createUser: function (firstName, lastName, tagname, avatar)
+        {
+            return new Promise((resolve, reject) =>
                 db.create_user([firstName, lastName, tagname, avatar], function (err)
                 {
                     promise.resolve();
-                });
-                return promise;
-            },
-            getUsersByTagName: function (name)
-            {
-                var promise = new Promise();
+                }));
+        },
+        getUsersByTagName: function (name)
+        {
+            return new Promise((resolve, reject) =>
                 db.get_users_by_tagname(['%' + name + '%'], function (err, users)
                 {
                     promise.resolve(users);
-                });
-                return promise;
-            }
-        },
-        sections: {
-            createSection: function (title, description, subsection_id)
-            {
-                var promise = new Promise();
-                db.create_section([title, description, subsection_id], function (err)
+                }));
+        }
+    },
+    sections: {
+        createSection: function (title, description)
+        {
+            return new Promise((resolve, reject) =>
+                db.create_section([title, description], function (err)
                 {
-                    promise.resolve();
-                });
-                return promise;
-            },
-            getSections: function ()
-            {
-                var promise = new Promise();
+                    resolve();
+                }));
+        },
+        getSections: function ()
+        {
+            return new Promise((resolve, reject) =>
                 db.get_sections(function (err, sections)
                 {
-                   promise.resolve(sections);
-                });
-                return promise;
-            }
+                    resolve(sections);
+                }));
+        },
+        getThreads: function (sectionId)
+        {
+            return new Promise((resolve, reject) =>
+                db.get_threads_from_section([sectionId], function (err, threads)
+                {
+                    resolve(threads);
+                }));
         }
     }
 };

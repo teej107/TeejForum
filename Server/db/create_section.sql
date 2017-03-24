@@ -1,1 +1,1 @@
-INSERT INTO sections (name, description, subsection_id) VALUES ($1, $2, $3)
+INSERT INTO sections (name, description) VALUES ($1, $2)
