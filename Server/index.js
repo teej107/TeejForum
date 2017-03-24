@@ -36,9 +36,19 @@ app.listen(port, function ()
     console.log(new Date().currentTime());
 });
 
-function toAPI(str)
+function toAPI(...str)
 {
-    return '/api/' + str;
+    var value = '/api';
+    str.forEach(function (e)
+    {
+       value += '/' + e;
+    });
+    return value;
 }
 
 app.get(toAPI('sections'), apiController.getSections);
+
+
+var arg = ':id';
+app.get(toAPI('thread', arg), apiController.getThreads(arg));
+app.post(toAPI('thread'), apiController.postToThread)

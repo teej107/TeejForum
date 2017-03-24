@@ -1,0 +1,1 @@
+INSERT INTO thread_conversations (users, thread_id, content) VALUES($1, $2, $3);

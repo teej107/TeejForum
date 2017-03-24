@@ -50,5 +50,20 @@ module.exports = {
                     resolve(threads);
                 }));
         }
+    },
+    threads: {
+        post: function (user, threadId, content)
+        {
+            return new Promise((resolve, reject) =>
+            {
+                db.post_to_thread([user, threadId, content], function (err)
+                {
+                    db.get_post([user, threadId, content], function (err, post)
+                    {
+                        resolve(post);
+                    });
+                });
+            });
+        }
     }
 };

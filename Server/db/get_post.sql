@@ -1,0 +1,1 @@
+SELECT users, thread_id, content FROM thread_conversations WHERE users = $1 AND thread_id = $2 AND content = $3;
