@@ -1,1 +1,1 @@
-SELECT * FROM sections
+SELECT title, description FROM sections

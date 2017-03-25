@@ -7,9 +7,12 @@ var utilities = require('./utilities');
 var strategy = require('./strategy-init');
 var storage = require('./storage');
 var apiController = require('./api-controller');
-var express = require('express');
+var htmlController = require('./html-controller');
 
+var express = require('express');
 var app = express();
+app.use(express.static('../Web Client'));
+
 var cors = require('cors');
 var bodyParser = require('body-parser');
 var passport = require('passport');
@@ -36,19 +39,11 @@ app.listen(port, function ()
     console.log(new Date().currentTime());
 });
 
-function toAPI(...str)
-{
-    var value = '/api';
-    str.forEach(function (e)
-    {
-       value += '/' + e;
-    });
-    return value;
-}
+app.get('/', htmlController.redirect('/index.html'));
 
-app.get(toAPI('sections'), apiController.getSections);
+app.get('/api/sections', apiController.getSections);
 
 
 var arg = ':id';
-app.get(toAPI('thread', arg), apiController.getThreads(arg));
-app.post(toAPI('thread'), apiController.postToThread)
+app.get('/api/thread/' + arg, apiController.getThreads(arg));
+app.post('/api/thread/' + arg, apiController.postToThread);
