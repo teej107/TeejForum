@@ -1,7 +1,7 @@
 /**
  * Created by tanner on 3/25/17.
  */
-app.service('forumSectionsService', function ($http, $q)
+app.service('apiService', function ($http, $q)
 {
     this.getSections = function ()
     {
@@ -10,11 +10,10 @@ app.service('forumSectionsService', function ($http, $q)
             $http({
                 url: getServer() + '/api/sections',
                 method: 'GET'
-            }).then((success) =>
+            }).then(function (success)
             {
                 resolve(success.data);
-            });
+            })
         });
-
-    }
+    };
 });

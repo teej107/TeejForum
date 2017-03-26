@@ -6,27 +6,28 @@
     <title>Teej Forum</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="js/directive/forum-sections/forum-sections.css">
 </head>
-<body>
-<main-navbar></main-navbar>
-<div id="body">
-    <forum-sections></forum-sections>
-    <current-view></current-view>
+<body ng-controller="bodyController">
+<navbar></navbar>
+<div>
+    <sectionbar></sectionbar>
+    <main>
+
+    </main>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+<!--scripts-->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"
         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
         crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
 
 <script src="js/utilities.js"></script>
 <script src="js/app.js"></script>
-<script src="js/directive/forum-sections/forum-sections.js"></script>
-<script src="js/directive/forum-sections/forum-sections-service.js"></script>
-<script src="js/directive/main-navbar/main-navbar.js"></script>
-<script src="js/directive/current-view/current-view.js"></script>
-<script src="js/directive/current-view/current-view-service.js"></script>
+<script src="js/bodyController.js"></script>
+<script src="js/apiService.js"></script>
+<script src="js/directive/navbar/navbar.js"></script>
+<script src="js/directive/sectionbar/sectionbar.js"></script>
 </body>
 </html>
