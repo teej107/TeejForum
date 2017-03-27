@@ -13,6 +13,6 @@ app.directive('sectionbar', function ()
             {
                 $scope.sections = success;
             });
-        }
+        },
     };
 });

@@ -12,7 +12,8 @@ app.service('apiService', function ($http, $q)
                 method: 'GET'
             }).then(function (success)
             {
-                resolve(success.data);
+                sections = success.data;
+                resolve(sections);
             })
         });
     };
