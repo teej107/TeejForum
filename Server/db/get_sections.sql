@@ -1,1 +1,1 @@
-SELECT title, description FROM sections
+SELECT id, title, description FROM sections

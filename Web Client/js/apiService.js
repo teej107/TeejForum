@@ -8,13 +8,26 @@ app.service('apiService', function ($http, $q)
         return $q(function (resolve, reject)
         {
             $http({
-                url: getServer() + '/api/sections',
+                url: '/api/sections',
                 method: 'GET'
             }).then(function (success)
             {
-                sections = success.data;
-                resolve(sections);
+                resolve(success.data);
             })
         });
     };
+
+    this.getThreadsFromSection = function (sectionId)
+    {
+        return $q(function (resolve, reject)
+        {
+           $http({
+               url: '/api/section/' + sectionId,
+               method: 'GET'
+           }).then(function (success)
+           {
+               resolve(success.data);
+           })
+        });
+    }
 });

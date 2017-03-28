@@ -42,7 +42,7 @@ module.exports = {
                     resolve(sections);
                 }));
         },
-        getThreads: function (sectionId)
+        getThreadsFromSection: function (sectionId)
         {
             return new Promise((resolve, reject) =>
                 db.get_threads_from_section([sectionId], function (err, threads)

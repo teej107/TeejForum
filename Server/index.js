@@ -4,10 +4,10 @@
 var port = 3000;
 
 var utilities = require('./utilities');
-var strategy = require('./strategy-init');
+var strategy = require('./strategyInit');
 var storage = require('./storage');
-var apiController = require('./api-controller');
-var htmlController = require('./html-controller');
+var apiController = require('./apiController');
+var htmlController = require('./htmlController');
 
 var express = require('express');
 var app = express();
@@ -39,11 +39,10 @@ app.listen(port, function ()
     console.log(new Date().currentTime());
 });
 
-app.get('/', htmlController.redirect('/index.html'));
-
 app.get('/api/sections', apiController.getSections);
 
-
 var arg = ':id';
-app.get('/api/thread/' + arg, apiController.getThreads(arg));
-app.post('/api/thread/' + arg, apiController.postToThread);
+app.get('/api/section/' + arg, apiController.getThreadsFromSection(arg));
+app.post('/api/thread/' + arg, apiController.postToThread(arg));
+
+app.get('*', htmlController.redirect('/index.html'));
