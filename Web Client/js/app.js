@@ -6,7 +6,8 @@ var app = angular.module('teej-forum', ['ui.router']);
 app.config(function ($stateProvider, $locationProvider)
 {
     $stateProvider
-        .state('section', new Route('/section/:id', 'template/section.html', 'sectionController'))
+        .state('section', new Route('/section/:id', '/template/section.html', 'sectionController'))
+        .state('thread', new Route('/thread/:id', '/template/thread.html', 'threadController'));
 
     $locationProvider.html5Mode({
         enabled: true,

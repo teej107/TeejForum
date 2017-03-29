@@ -72,11 +72,14 @@ module.exports = {
             {
                 db.get_thread([threadId], function (err, thread)
                 {
-                    resolve({
-                        id: threadId,
-                        posts: thread
+                    thread = thread[0];
+                    db.get_thread_conversation([threadId], function (err, conversation)
+                    {
+                        thread.posts = conversation;
+                        resolve(thread);
                     });
                 });
+
             });
         }
     }

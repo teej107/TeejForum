@@ -3,7 +3,7 @@
  */
 app.service('apiService', function ($http, $q)
 {
-    this.get = function ()
+    this.getSections = function ()
     {
         return $q(function (resolve, reject)
         {
@@ -21,13 +21,27 @@ app.service('apiService', function ($http, $q)
     {
         return $q(function (resolve, reject)
         {
-           $http({
-               url: '/api/section/' + sectionId,
-               method: 'GET'
-           }).then(function (success)
-           {
-               resolve(success.data);
-           })
+            $http({
+                url: '/api/section/' + sectionId,
+                method: 'GET'
+            }).then(function (success)
+            {
+                resolve(success.data);
+            })
         });
-    }
+    };
+
+    this.getThreadById = function (threadId)
+    {
+        return $q(function (resolve, reject)
+        {
+            $http({
+                url: '/api/thread/' + threadId,
+                method: 'GET'
+            }).then(function (success)
+            {
+                resolve(success.data);
+            });
+        });
+    };
 });

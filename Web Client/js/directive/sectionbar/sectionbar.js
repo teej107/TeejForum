@@ -9,7 +9,7 @@ app.directive('sectionbar', function ()
         scope: {},
         controller: function ($scope, apiService)
         {
-            apiService.get().then(function (success)
+            apiService.getSections().then(function (success)
             {
                 $scope.sections = success;
             });
