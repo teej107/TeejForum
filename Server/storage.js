@@ -8,7 +8,7 @@ var db = massive.connectSync({
 
 module.exports = {
     users: {
-        createUser: function (firstName, lastName, tagname, avatar)
+        create: function (firstName, lastName, tagname, avatar)
         {
             return new Promise((resolve, reject) =>
                 db.create_user([firstName, lastName, tagname, avatar], function (err)
@@ -16,7 +16,7 @@ module.exports = {
                     promise.resolve();
                 }));
         },
-        getUsersByTagName: function (name)
+        getByTagName: function (name)
         {
             return new Promise((resolve, reject) =>
                 db.get_users_by_tagname(['%' + name + '%'], function (err, users)
@@ -26,7 +26,7 @@ module.exports = {
         }
     },
     sections: {
-        createSection: function (title, description)
+        create: function (title, description)
         {
             return new Promise((resolve, reject) =>
                 db.create_section([title, description], function (err)
@@ -34,7 +34,7 @@ module.exports = {
                     resolve();
                 }));
         },
-        getSections: function ()
+        get: function ()
         {
             return new Promise((resolve, reject) =>
                 db.get_sections(function (err, sections)
@@ -42,7 +42,7 @@ module.exports = {
                     resolve(sections);
                 }));
         },
-        getThreadsFromSection: function (sectionId)
+        getThreadsById: function (sectionId)
         {
             return new Promise((resolve, reject) =>
                 db.get_threads_from_section([sectionId], function (err, threads)
@@ -61,6 +61,20 @@ module.exports = {
                     db.get_post([user, threadId, content], function (err, post)
                     {
                         resolve(post);
+                    });
+                });
+            });
+        },
+
+        getById: function (threadId)
+        {
+            return new Promise((resolve, reject) =>
+            {
+                db.get_thread([threadId], function (err, thread)
+                {
+                    resolve({
+                        id: threadId,
+                        posts: thread
                     });
                 });
             });

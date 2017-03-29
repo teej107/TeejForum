@@ -3,7 +3,7 @@
  */
 app.controller('sectionController', function ($scope, $stateParams, apiService)
 {
-    apiService.getThreadsFromSection($stateParams.id).then(function (success)
+    apiService.getThreadsBySectionId($stateParams.id).then(function (success)
     {
         $scope.threads = success;
     });

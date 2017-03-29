@@ -3,7 +3,7 @@
  */
 app.service('apiService', function ($http, $q)
 {
-    this.getSections = function ()
+    this.get = function ()
     {
         return $q(function (resolve, reject)
         {
@@ -17,7 +17,7 @@ app.service('apiService', function ($http, $q)
         });
     };
 
-    this.getThreadsFromSection = function (sectionId)
+    this.getThreadsBySectionId = function (sectionId)
     {
         return $q(function (resolve, reject)
         {

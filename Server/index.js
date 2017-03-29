@@ -20,7 +20,6 @@ var passport = require('passport');
 var GoogleStrategy = require('passport-google').Strategy;
 app.use(cors());
 app.use(bodyParser.json());
-
 /*app.use(passport.initialize());
  var googleParams = strategy.google('/auth/google/callback', 'localhost:' + port);
  passport.use(new GoogleStrategy());
@@ -42,7 +41,8 @@ app.listen(port, function ()
 app.get('/api/sections', apiController.getSections);
 
 var arg = ':id';
-app.get('/api/section/' + arg, apiController.getThreadsFromSection(arg));
+app.get('/api/section/' + arg, apiController.getThreadsBySectionId(arg));
+app.get('/api/thread/' + arg, apiController.getThread(arg));
 app.post('/api/thread/' + arg, apiController.postToThread(arg));
 
 app.get('*', htmlController.redirect('/index.html'));

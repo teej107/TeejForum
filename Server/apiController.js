@@ -7,37 +7,51 @@ var utilities = require('./utilities');
 module.exports = {
     getSections: function (req, res)
     {
-        storage.sections.getSections().then(function (resolve, reject)
+        storage.sections.get().then((success) =>
         {
-            res.send(resolve);
+            res.send(success);
         });
     },
-    getThreadsFromSection: function (sectionId)
+    getThreadsBySectionId: function (sectionId)
     {
         sectionId = sectionId.substring(1);
         return (req, res) =>
         {
-            storage.sections.getThreadsFromSection(req.params[sectionId]).then(function (resolve, reject)
+            storage.sections.getThreadsById(req.params[sectionId]).then((success) =>
             {
-                res.send(truthy(resolve, []));
+                res.send(truthy(success, []));
             });
         }
     },
 
     postToThread: function (threadId)
     {
+        threadId = threadId.substring(1);
         return (req, res) =>
         {
             var user = req.body.user;
-            var threadId = req.body[threadId];
+            var id = req.body[threadId];
             var content = req.body.content;
             var err = utilities.validate(res, user, threadId, content);
             if (err)
                 return;
 
-            return storage.threads.post(user, threadId, content).then(function (resolve, reject)
+            storage.threads.post(user, threadId, content).then((success) =>
             {
-                res.send(resolve);
+                res.send(success);
+            });
+        }
+    },
+
+    getThread: function (threadId)
+    {
+        threadId = threadId.substring(1);
+        return (req, res) =>
+        {
+            var id = req.params[threadId];
+            storage.threads.getById(id).then((success) =>
+            {
+                res.send(success);
             });
         }
     }
