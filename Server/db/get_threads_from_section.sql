@@ -1,3 +1,3 @@
-SELECT users.tagname, threads.title, TO_CHAR(threads.created_time, 'MM/DD/YYYY HH:MM:SS') AS created_time FROM threads
+SELECT threads.id, users.tagname, threads.title, FORMAT_DATE(threads.created_time) AS created_time FROM threads
 JOIN users ON users.id = threads.creator
 WHERE threads.section_id = $1 ORDER BY created_time DESC

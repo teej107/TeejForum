@@ -5,6 +5,6 @@ app.controller('threadController', function ($scope, $stateParams, apiService)
 {
     apiService.getThreadById($stateParams.id).then(function (success)
     {
-        console.log(success);
+        $scope.thread = success;
     });
 });

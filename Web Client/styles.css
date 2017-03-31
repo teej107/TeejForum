@@ -9,3 +9,9 @@ html, body
     height: 100%;
     border-right: 1px solid #ebebeb;
 }
+
+.bg-white
+{
+    background: white;
+}
+
