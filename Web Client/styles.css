@@ -4,6 +4,12 @@ html, body
     height: 100%;
 }
 
+.composebox textarea
+{
+    resize: none;
+    height: 200px;
+}
+
 .sectionbar
 {
     height: 100%;
