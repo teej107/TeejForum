@@ -29,17 +29,15 @@ module.exports = {
         threadId = threadId.substring(1);
         return (req, res) =>
         {
-            var user = req.body.user;
-            var id = req.body[threadId];
+            //TODO: Use sessions here
+            var user = /*req.body.user*/ 1;
+
+            var id = req.params[threadId];
             var content = req.body.content;
-            var err = utilities.validate(res, user, threadId, content);
-            if (err)
+            if (utilities.validate((err) => err.sendResponse(res), {user: user, [threadId]: id, content: content}))
                 return;
 
-            storage.threads.post(user, threadId, content).then((success) =>
-            {
-                res.send(success);
-            });
+            storage.threads.post(user, id, content).then((success) => res.send(success), (failure) => res.send(failure));
         }
     },
 

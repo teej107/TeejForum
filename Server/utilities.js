@@ -3,7 +3,8 @@
  */
 module.exports = {
     formatTime: formatTime,
-    validate: validate
+    validate: validate,
+    Error: Error
 };
 
 Date.prototype.currentTime = function ()
@@ -31,22 +32,38 @@ function Error(reason, parameters)
     {
         this.error.parameters = parameters;
     }
+    this.sendResponse = function (res, status = 400)
+    {
+        res.status(status).send(this);
+    };
 }
 
-function validate(res, ...args)
+function validate(errorCb, obj)
 {
-    var missingArgs = [];
-    args.forEach(function (e)
+    if (!obj && errorCb instanceof Object)
     {
-        if (!e)
+        obj = errorCb;
+        errorCb = null;
+    }
+
+    var missingArgs = [];
+    for (var key in obj)
+    {
+        if (obj.hasOwnProperty(key))
         {
-            missingArgs.push(e);
+            if (!obj[key])
+            {
+                missingArgs.push(key);
+            }
         }
-    });
+    }
     if (missingArgs.length > 0)
     {
         var err = new Error('missing keys', missingArgs);
-        res.status(400).send(err);
+        if (errorCb)
+        {
+            errorCb(err);
+        }
         return err;
     }
 }

@@ -1,10 +1,13 @@
-<div class="well">
-    <h2>{{ thread.title }}</h2>
-    <p>{{ thread.body}}</p>
+<div class="well relative">
+    <a class="btn btn-default glyphicon glyphicon glyphicon-arrow-left top-left" ng-click="back()"></a>
+    <div class="title-body">
+        <h2 class="text-center">{{ thread.title }}</h2>
+        <p class="text-center">{{ thread.body}}</p>
+    </div>
     <div ng-repeat="post in thread.posts" class="well well-sm bg-white">
         <h3>{{ post.tagname }}</h3>
         <p>{{ post.content }}</p>
         <h6>{{ post.time }}</h6>
     </div>
 </div>
-<composebox></composebox>
+<composebox thread="thread"></composebox>

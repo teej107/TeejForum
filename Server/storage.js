@@ -1,10 +1,27 @@
 /**
  * Created by tanner on 3/21/17.
  */
+var utilities = require('./utilities');
 var massive = require('massive');
 var db = massive.connectSync({
     connectionString: 'postgres://postgres:tanner@localhost/teejforum'
 });
+
+function sendThread (threadId)
+{
+    return (resolve, reject) =>
+    {
+        db.get_thread([threadId], function (err, thread)
+        {
+            thread = thread[0];
+            db.get_thread_conversation([threadId], function (err, conversation)
+            {
+                thread.posts = conversation;
+                resolve(thread);
+            });
+        })
+    };
+}
 
 module.exports = {
     users: {
@@ -56,30 +73,19 @@ module.exports = {
         {
             return new Promise((resolve, reject) =>
             {
+                if (utilities.validate((err) => reject(err), {user: user, id: threadId, content: content}))
+                    return;
+
                 db.post_to_thread([user, threadId, content], function (err)
                 {
-                    db.get_post([user, threadId, content], function (err, post)
-                    {
-                        resolve(post);
-                    });
+                    sendThread(threadId)(resolve, reject);
                 });
             });
         },
 
         getById: function (threadId)
         {
-            return new Promise((resolve, reject) =>
-            {
-                db.get_thread([threadId], function (err, thread)
-                {
-                    thread = thread[0];
-                    db.get_thread_conversation([threadId], function (err, conversation)
-                    {
-                        thread.posts = conversation;
-                        resolve(thread);
-                    });
-                });
-            });
+            return new Promise(sendThread(threadId));
         }
     }
 };

@@ -44,4 +44,22 @@ app.service('apiService', function ($http, $q)
             });
         });
     };
+
+    this.postToThread = function (threadId, content)
+    {
+        return $q(function (resolve, reject)
+        {
+            $http({
+                url: '/api/thread/' + threadId,
+                method: 'POST',
+                data: {
+                    id: threadId,
+                    content: content
+                }
+            }).then(function (success)
+            {
+                resolve(success.data);
+            });
+        });
+    };
 });
