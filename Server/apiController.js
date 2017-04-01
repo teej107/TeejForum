@@ -52,6 +52,9 @@ module.exports = {
             storage.threads.getById(id).then((success) =>
             {
                 res.send(success);
+            }, (failure) =>
+            {
+                res.send(failure);
             });
         }
     }

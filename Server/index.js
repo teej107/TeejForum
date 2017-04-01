@@ -11,7 +11,10 @@ var htmlController = require('./htmlController');
 
 var express = require('express');
 var app = express();
+
 app.use(express.static('../Web Client'));
+app.use('/thread', express.static('../Web Client/index.html'));
+app.use('/section', express.static('../Web Client/index.html'));
 
 var cors = require('cors');
 var bodyParser = require('body-parser');
@@ -44,5 +47,4 @@ var arg = ':id';
 app.get('/api/section/' + arg, apiController.getThreadsBySectionId(arg));
 app.get('/api/thread/' + arg, apiController.getThread(arg));
 app.post('/api/thread/' + arg, apiController.postToThread(arg));
-
 app.get('*', htmlController.redirect('/index.html'));

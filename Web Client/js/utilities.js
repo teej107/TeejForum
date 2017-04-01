@@ -3,5 +3,10 @@
  */
 function getDirectiveDirectory()
 {
-    return 'js/directive';
+    return '/js/directive';
+}
+
+function getControllerDirectory()
+{
+    return '/js/controller'
 }
