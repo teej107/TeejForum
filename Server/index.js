@@ -4,10 +4,10 @@
 var port = 3000;
 
 var utilities = require('./utilities');
-var strategy = require('./strategyInit');
 var storage = require('./storage');
 var apiController = require('./apiController');
 var htmlController = require('./htmlController');
+var secret = require('./secret');
 
 var express = require('express');
 var app = express();
@@ -20,26 +20,38 @@ var cors = require('cors');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 
-var GoogleStrategy = require('passport-google').Strategy;
 app.use(cors());
 app.use(bodyParser.json());
-/*app.use(passport.initialize());
- var googleParams = strategy.google('/auth/google/callback', 'localhost:' + port);
- passport.use(new GoogleStrategy());
- passport.serializeUser(function (user, done)
- {
- done(null, user);
- });
- passport.deserializeUser(function (obj, done)
- {
- done(null, obj);
- });*/
+app.use(passport.initialize());
 
+var GoogleStrategy = require('passport-google-oauth2').Strategy;
+passport.use(new GoogleStrategy(secret.strategy.google('http://localhost:3000/auth/google/return'),
+    function (accessToken, refreshToken, profile, done)
+    {
+        console.log(profile);
+        return done(null, profile);
+    }));
+passport.serializeUser(function (user, done)
+{
+    done(null, user);
+});
+passport.deserializeUser(function (obj, done)
+{
+    done(null, obj);
+});
 app.listen(port, function ()
 {
     console.log('listening on port', port);
-    console.log(new Date().currentTime());
+    console.log(utilities.currentTime());
 });
+
+app.get('/auth/google', passport.authenticate('google', {scope: ['profile']}));
+app.get('/auth/google/return', passport.authenticate('google', {failureRedirect: '/nope'}),
+    function (req, res)
+    {
+        res.redirect('/');
+    });
+
 
 app.get('/api/sections', apiController.getSections);
 
@@ -47,4 +59,4 @@ var arg = ':id';
 app.get('/api/section/' + arg, apiController.getThreadsBySectionId(arg));
 app.get('/api/thread/' + arg, apiController.getThread(arg));
 app.post('/api/thread/' + arg, apiController.postToThread(arg));
-app.get('*', htmlController.redirect('/index.html'));
+/*app.get('*', htmlController.redirect('/index.html'));*/

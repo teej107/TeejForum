@@ -4,19 +4,16 @@
 module.exports = {
     formatTime: formatTime,
     validate: validate,
-    Error: Error
+    Error: Error,
+    currentTime: currentTime
 };
 
-Date.prototype.currentTime = function ()
+function currentTime(date = new Date())
 {
-    return (this.getMonth() + 1) + "/" + formatTime(this.getDate()) + "/" + this.getFullYear() + " " +
-        formatTime(this.getHours()) + ":" + formatTime(this.getMinutes()) + ":" + formatTime(this.getSeconds());
-};
+    return (date.getMonth() + 1) + "/" + formatTime(date.getDate()) + "/" + date.getFullYear() + " " +
+        formatTime(date.getHours()) + ":" + formatTime(date.getMinutes()) + ":" + formatTime(date.getSeconds());
+}
 
-Object.prototype.truthy = function (obj, ifFalsy)
-{
-    return obj ? obj : ifFalsy;
-};
 
 function formatTime(int)
 {

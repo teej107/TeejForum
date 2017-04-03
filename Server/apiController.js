@@ -19,7 +19,7 @@ module.exports = {
         {
             storage.sections.getThreadsById(req.params[sectionId]).then((success) =>
             {
-                res.send(truthy(success, []));
+                res.send(success ? success : []);
             });
         }
     },
