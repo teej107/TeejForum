@@ -18,17 +18,24 @@ app.use('/section', express.static('../Web Client/index.html'));
 
 var cors = require('cors');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 var passport = require('passport');
 
+app.use(session(secret.session));
 app.use(cors());
 app.use(bodyParser.json());
 app.use(passport.initialize());
+app.use(passport.session());
+app.use(function (req, res, next)
+{
+    console.log(req.session);
+    next();
+});
 
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
 passport.use(new GoogleStrategy(secret.strategy.google('http://localhost:3000/auth/google/return'),
     function (accessToken, refreshToken, profile, done)
     {
-        console.log(profile);
         return done(null, profile);
     }));
 passport.serializeUser(function (user, done)
@@ -46,12 +53,13 @@ app.listen(port, function ()
 });
 
 app.get('/auth/google', passport.authenticate('google', {scope: ['profile']}));
-app.get('/auth/google/return', passport.authenticate('google', {failureRedirect: '/nope'}),
+app.get('/auth/google/return', passport.authenticate('google', { failureRedirect: '/nope' }),
     function (req, res)
     {
         res.redirect('/');
     });
 
+app.get('/user', htmlController.sessionUser);
 
 app.get('/api/sections', apiController.getSections);
 

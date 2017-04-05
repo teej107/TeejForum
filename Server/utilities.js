@@ -5,8 +5,25 @@ module.exports = {
     formatTime: formatTime,
     validate: validate,
     Error: Error,
-    currentTime: currentTime
+    currentTime: currentTime,
+    getObject: getObject
 };
+
+function getObject(obj, ...str)
+{
+    if (str.length === 0)
+        return obj;
+
+    if (obj instanceof Object)
+    {
+        var key = str[0];
+        str.splice(0, 1);
+        var nested = obj[key];
+        return nested ? getObject(nested, ...str) : null;
+    }
+    return null;
+}
+
 
 function currentTime(date = new Date())
 {

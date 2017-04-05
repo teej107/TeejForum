@@ -1,7 +1,7 @@
 /**
  * Created by tanner on 3/25/17.
  */
-var app = angular.module('teej-forum', ['ui.router']);
+var app = angular.module('teej-forum', ['ui.router', 'ngCookies']);
 
 app.config(function ($stateProvider, $locationProvider)
 {
