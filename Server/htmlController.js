@@ -9,7 +9,6 @@ module.exports = {
         return function (req, res)
         {
             res.redirect(where);
-            res.send();
         }
     },
     sessionUser: function (req, res)

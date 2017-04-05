@@ -26,11 +26,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(function (req, res, next)
-{
-    console.log(req.session);
-    next();
-});
 
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
 passport.use(new GoogleStrategy(secret.strategy.google('http://localhost:3000/auth/google/return'),
