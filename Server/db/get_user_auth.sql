@@ -1,0 +1,1 @@
+SELECT * FROM authentication WHERE id = $1 AND type = $2

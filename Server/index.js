@@ -41,6 +41,7 @@ passport.deserializeUser(function (obj, done)
 {
     done(null, obj);
 });
+var passportAuth = passport.authenticate('google', {failureRedirect: '/nope'});
 app.listen(port, function ()
 {
     console.log('listening on port', port);
@@ -48,11 +49,7 @@ app.listen(port, function ()
 });
 
 app.get('/auth/google', passport.authenticate('google', {scope: ['profile']}));
-app.get('/auth/google/return', passport.authenticate('google', { failureRedirect: '/nope' }),
-    function (req, res)
-    {
-        res.redirect('/');
-    });
+app.get('/auth/google/return', passportAuth, htmlController.redirect('/'));
 
 app.get('/user', htmlController.sessionUser);
 
@@ -61,5 +58,5 @@ app.get('/api/sections', apiController.getSections);
 var arg = ':id';
 app.get('/api/section/' + arg, apiController.getThreadsBySectionId(arg));
 app.get('/api/thread/' + arg, apiController.getThread(arg));
-app.post('/api/thread/' + arg, apiController.postToThread(arg));
+app.post('/api/thread/' + arg, passport.authenticate('google'), apiController.postToThread(arg));
 /*app.get('*', htmlController.redirect('/index.html'));*/

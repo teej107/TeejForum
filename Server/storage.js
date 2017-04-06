@@ -7,7 +7,7 @@ var db = massive.connectSync({
     connectionString: 'postgres://postgres:tanner@localhost/teejforum'
 });
 
-function sendThread (threadId)
+function sendThread(threadId)
 {
     return (resolve, reject) =>
     {
@@ -28,18 +28,27 @@ module.exports = {
         create: function (firstName, lastName, tagname, avatar)
         {
             return new Promise((resolve, reject) =>
-                db.create_user([firstName, lastName, tagname, avatar], function (err)
-                {
-                    promise.resolve();
-                }));
+                db.create_user([firstName, lastName, tagname, avatar], () => resolve()));
         },
         getByTagName: function (name)
         {
             return new Promise((resolve, reject) =>
-                db.get_users_by_tagname(['%' + name + '%'], function (err, users)
-                {
-                    promise.resolve(users);
-                }));
+                db.get_users_by_tagname(['%' + name + '%'], (err, users) => resolve(users)));
+        },
+        getUserAuth: function (id, type)
+        {
+            return new Promise((resolve, reject) =>
+                db.get_user_auth([id, type], (err, auth) => resolve(auth)));
+        },
+        setUserAuthId: function (id, type, authId)
+        {
+            return new Promise((resolve, reject) =>
+                db.set_user_auth_id([id, type, authId], (err, result) => resolve(result)));
+        },
+        addUserAuth: function (id, type, authId)
+        {
+            return new Promise((resolve, reject) =>
+                db.add_user_auth([id, type, authId], (err, result) => resolve(result)));
         }
     },
     sections: {
