@@ -29,15 +29,27 @@ module.exports = {
         threadId = threadId.substring(1);
         return (req, res) =>
         {
-            //TODO: Use sessions here
-            var user = /*req.body.user*/ 1;
-
+            var user = utilities.getObject(req, 'session', 'passport', 'user', 'id');
             var id = req.params[threadId];
             var content = req.body.content;
-            if (utilities.validate((err) => err.sendResponse(res), {user: user, [threadId]: id, content: content}))
+            if (utilities.validate((err) => err.sendResponse(res), {googleId: user, [threadId]: id, content: content}))
                 return;
 
-            storage.threads.post(user, id, content).then((success) => res.send(success), (failure) => res.send(failure));
+            storage.users.getByAuthId('google', user).then((success) =>
+            {
+                if (success.length === 1)
+                {
+                    user = success[0].id;
+                    if (utilities.validate((err) => err.sendResponse(res), {user: user}))
+                        return;
+
+                    storage.threads.post(user, id, content).then((success) => res.send(success), (failure) => res.send(failure));
+                }
+                else
+                {
+                    res.status(404).send(new utilities.Error('googleId not found'));
+                }
+            });
         }
     },
 

@@ -45,5 +45,5 @@ app.service('authService', function ($http, $q)
                 httpFetchUser(resolve, reject);
             }
         });
-    }.bind(this);
+    };
 });
