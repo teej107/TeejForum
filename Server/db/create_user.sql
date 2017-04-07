@@ -1,1 +1,1 @@
-INSERT INTO users (firstname, lastname, tagname, avatar) VALUES ($1, $2, $3, $4)
+INSERT INTO users (firstname, lastname, tagname, avatar) VALUES ($1, $2, $3, $4) RETURNING id

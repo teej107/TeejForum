@@ -22,21 +22,26 @@ var session = require('express-session');
 var passport = require('passport');
 
 app.use(session(secret.session));
-//app.use(cors());
+app.use(cors());
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(function (req, res, next)
-{
-    //console.log(req.session);
-    next();
-});
 
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
 passport.use(new GoogleStrategy(secret.strategy.google('http://localhost:3000/auth/google/return'),
     function (accessToken, refreshToken, profile, done)
     {
-        return done(null, profile);
+        if (!profile.id)
+        {
+            console.warn('missing "profile.id"', profile);
+        }
+        else
+        {
+            storage.users.initIfNull('google', profile.id).then((result) =>
+            {
+                done(null, profile);
+            });
+        }
     }));
 passport.serializeUser(function (user, done)
 {

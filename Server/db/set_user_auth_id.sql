@@ -1,1 +1,0 @@
-UPDATE authentication SET auth_id = $3 WHERE id = $1 AND type = $2

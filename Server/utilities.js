@@ -1,13 +1,20 @@
 /**
  * Created by tanner on 3/21/17.
  */
-module.exports = {
+var methods = {
     formatTime: formatTime,
     validate: validate,
     Error: Error,
     currentTime: currentTime,
     getObject: getObject
 };
+module.exports = function ()
+{
+    Function.prototype.empty = function ()
+    {
+    };
+    return methods;
+}();
 
 function getObject(obj, ...str)
 {

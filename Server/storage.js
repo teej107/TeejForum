@@ -11,10 +11,10 @@ function sendThread(threadId)
 {
     return (resolve, reject) =>
     {
-        db.get_thread([threadId], function (err, thread)
+        db.get_thread([threadId], (err, thread) =>
         {
             thread = thread[0];
-            db.get_thread_conversation([threadId], function (err, conversation)
+            db.get_thread_conversation([threadId], (err, conversation) =>
             {
                 thread.posts = conversation;
                 resolve(thread);
@@ -32,24 +32,46 @@ function getByTagName(name)
 function getUserByAuthId(type, id)
 {
     return new Promise((resolve, reject) =>
-    {
-        db.get_user_by_auth_id([type, id], function (err, record)
-        {
-            resolve(record);
-        });
-    });
+        db.get_user_by_auth_id([type, id], (err, record) => resolve(record)));
 }
 
+function addUserAuth(id, type, authId)
+{
+    return new Promise((resolve, reject) =>
+        db.add_user_auth([id, type, authId], (err, result) => resolve(result)));
+}
+
+function createUser(firstName, lastName, tagname, avatar)
+{
+    return new Promise((resolve, reject) =>
+        db.create_user([firstName, lastName, tagname, avatar], (err, records) =>
+        {
+            resolve(records[0].id);
+        }));
+}
 
 module.exports = {
     users: {
-        create: function (firstName, lastName, tagname, avatar)
+        initIfNull: function (type, authId)
         {
             return new Promise((resolve, reject) =>
-            {
-                db.create_user([firstName, lastName, tagname, avatar], () => resolve())
-            });
+                getUserByAuthId(type, authId).then((record) =>
+                {
+                    if (record.length === 1)
+                    {
+                        db.update_last_online([record[0].id], Function.prototype.empty);
+                        resolve();
+                    }
+                    else
+                    {
+                        createUser().then((id) =>
+                        {
+                            addUserAuth(id, type, authId).then((result) => resolve());
+                        });
+                    }
+                }));
         },
+        create: createUser,
         getByTagName: getByTagName,
 
         getAuth: function (id, type)
@@ -57,16 +79,7 @@ module.exports = {
             return new Promise((resolve, reject) =>
                 db.get_user_auth([id, type], (err, auth) => resolve(auth)));
         },
-        setAuthId: function (id, type, authId)
-        {
-            return new Promise((resolve, reject) =>
-                db.set_user_auth_id([id, type, authId], (err, result) => resolve(result)));
-        },
-        addUserAuth: function (id, type, authId)
-        {
-            return new Promise((resolve, reject) =>
-                db.add_user_auth([id, type, authId], (err, result) => resolve(result)));
-        },
+        addAuth: addUserAuth,
         getByAuthId: getUserByAuthId
     },
     sections: {
