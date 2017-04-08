@@ -39,7 +39,7 @@ passport.use(new GoogleStrategy(secret.strategy.google('http://localhost:3000/au
         {
             storage.users.initIfNull('google', profile.id).then((result) =>
             {
-                done(null, profile);
+                done(null, result);
             });
         }
     }));

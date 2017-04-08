@@ -46,7 +46,7 @@ function createUser(firstName, lastName, tagname, avatar)
     return new Promise((resolve, reject) =>
         db.create_user([firstName, lastName, tagname, avatar], (err, records) =>
         {
-            resolve(records[0].id);
+            resolve(records[0]);
         }));
 }
 
@@ -60,13 +60,13 @@ module.exports = {
                     if (record.length === 1)
                     {
                         db.update_last_online([record[0].id], Function.prototype.empty);
-                        resolve();
+                        resolve(record);
                     }
                     else
                     {
-                        createUser().then((id) =>
+                        createUser().then((record) =>
                         {
-                            addUserAuth(id, type, authId).then((result) => resolve());
+                            addUserAuth(record.id, type, authId).then((result) => resolve(record));
                         });
                     }
                 }));
