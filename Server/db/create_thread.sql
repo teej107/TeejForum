@@ -1,0 +1,1 @@
+INSERT INTO threads (section_id, creator, title, body) VALUES ($1, $2, $3, $4) RETURNING *

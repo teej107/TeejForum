@@ -7,4 +7,5 @@ app.controller('sectionController', function ($scope, $stateParams, apiService)
     {
         $scope.threads = success;
     });
+    $scope.section = $stateParams.id;
 });

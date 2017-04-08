@@ -12,7 +12,11 @@ app.directive('navbar', function ()
             $scope.loginTitle = "Login";
             authService.getUserNotNull().then(function (success)
             {
-                $scope.loginTitle = success.tagname ? success.tagname : 'Setup profile';
+                $scope.loginTitle = success.tagname;
+                $scope.login = function ()
+                {
+                    $('#profile-modal').modal('show');
+                }
             }, function (failure)
             {
 

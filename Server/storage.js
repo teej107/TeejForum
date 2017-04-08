@@ -60,18 +60,17 @@ module.exports = {
                     if (record.length === 1)
                     {
                         db.update_last_online([record[0].id], Function.prototype.empty);
-                        resolve(record);
+                        resolve(record[0]);
                     }
                     else
                     {
                         createUser().then((record) =>
                         {
-                            addUserAuth(record.id, type, authId).then((result) => resolve(record));
+                            addUserAuth(record.id, type, authId).then((result) => resolve(record[0]));
                         });
                     }
                 }));
         },
-        create: createUser,
         getByTagName: getByTagName,
 
         getAuth: function (id, type)
@@ -80,7 +79,18 @@ module.exports = {
                 db.get_user_auth([id, type], (err, auth) => resolve(auth)));
         },
         addAuth: addUserAuth,
-        getByAuthId: getUserByAuthId
+        getByAuthId: getUserByAuthId,
+        updateProfile: function (id, tagname, firstname, lastname, avatar)
+        {
+            return new Promise((resolve, reject) =>
+            {
+                db.update_profile([id, tagname, firstname, lastname, avatar], function (err, record)
+                {
+                    console.log('updated', record[0]);
+                    resolve(record[0]);
+                })
+            });
+        }
     },
     sections: {
         create: function (title, description)
@@ -126,6 +136,24 @@ module.exports = {
         getById: function (threadId)
         {
             return new Promise(sendThread(threadId));
+        },
+
+        create: function (sectionId, user, title, body)
+        {
+            return new Promise((resolve, reject) =>
+            {
+                db.create_thread([sectionId, user, title, body], function (err, id)
+                {
+                    if(err)
+                    {
+                        reject(err);
+                    }
+                    else
+                    {
+                        resolve(id);
+                    }
+                });
+            });
         }
     }
 };

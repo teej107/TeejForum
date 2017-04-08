@@ -39,6 +39,10 @@ passport.use(new GoogleStrategy(secret.strategy.google('http://localhost:3000/au
         {
             storage.users.initIfNull('google', profile.id).then((result) =>
             {
+                utilities.addIfNotExists(result, 'firstname', profile.name.givenName);
+                utilities.addIfNotExists(result, 'lastname', profile.name.familyName);
+                utilities.addIfNotExists(result, 'tagname', profile._json.nickname);
+                utilities.addIfNotExists(result, 'avatar', profile.photos[0].value);
                 done(null, result);
             });
         }
@@ -67,6 +71,9 @@ app.get('/api/sections', apiController.getSections);
 
 var arg = ':id';
 app.get('/api/section/' + arg, apiController.getThreadsBySectionId(arg));
+app.post('/api/section/' + arg, apiController.createThread(arg));
 app.get('/api/thread/' + arg, apiController.getThread(arg));
-app.post('/api/thread/' + arg, /*passportAuth,*/ apiController.postToThread(arg));
-/*app.get('*', htmlController.redirect('/index.html'));*/
+app.post('/api/thread/' + arg, apiController.postToThread(arg));
+
+//For debugging
+app.get('*', htmlController.redirect('/index.html?bad=endpoint'));

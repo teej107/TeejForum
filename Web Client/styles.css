@@ -6,6 +6,10 @@ html, body {
   resize: none;
   height: 200px; }
 
+.create-thread textarea {
+  resize: none;
+  height: 300px; }
+
 .sectionbar {
   height: 100%;
   border-right: 1px solid #ebebeb; }
@@ -27,5 +31,14 @@ html, body {
 
 .title-body {
   margin-bottom: 25px; }
+
+#profile-modal h4 {
+  display: inline-block; }
+
+#create-thread {
+  margin-bottom: 20px; }
+
+label {
+  margin-top: 20px; }
 
 /*# sourceMappingURL=styles.css.map */

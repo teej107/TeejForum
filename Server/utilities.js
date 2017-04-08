@@ -6,7 +6,8 @@ var methods = {
     validate: validate,
     Error: Error,
     currentTime: currentTime,
-    getObject: getObject
+    getObject: getObject,
+    addIfNotExists: addIfNotExists
 };
 module.exports = function ()
 {
@@ -15,6 +16,14 @@ module.exports = function ()
     };
     return methods;
 }();
+
+function addIfNotExists(obj, key, value)
+{
+    if(!obj[key])
+    {
+        obj[key] = value;
+    }
+}
 
 function getObject(obj, ...str)
 {

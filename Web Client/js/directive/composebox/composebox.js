@@ -9,13 +9,13 @@ app.directive('composebox', function ()
         scope: {
             thread: '='
         },
-        controller: function ($scope, apiService)
+        controller: function ($scope, apiService, authService)
         {
             $scope.submit = function ()
             {
                 apiService.postToThread($scope.thread.id, $scope.content).then(function (result)
                 {
-                    if(result.error)
+                    if (result.error)
                     {
                         alert('unable to post :(');
                         return;
@@ -28,9 +28,9 @@ app.directive('composebox', function ()
                             delete thread[key];
                         }
                     }
-                    for(var key in result)
+                    for (var key in result)
                     {
-                        if(result.hasOwnProperty(key))
+                        if (result.hasOwnProperty(key))
                         {
                             thread[key] = result[key];
                         }

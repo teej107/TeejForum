@@ -14,7 +14,7 @@ module.exports = {
     sessionUser: function (req, res)
     {
         var passportSession = utilities.getObject(req, 'session', 'passport', 'user');
-        if(passportSession)
+        if (passportSession)
         {
             res.send(passportSession);
         }

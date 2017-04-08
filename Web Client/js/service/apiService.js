@@ -62,4 +62,25 @@ app.service('apiService', function ($http, $q)
             });
         });
     };
+
+    this.createThread = function (sectionId, title, body)
+    {
+        return $q(function (resolve, reject)
+        {
+            $http({
+                url: '/api/section/' + sectionId,
+                method: 'POST',
+                data: {
+                    title: title,
+                    body: body
+                }
+            }).then(function (success)
+            {
+                resolve(success.data);
+            }, function (failure)
+            {
+                resolve(failure.data);
+            })
+        });
+    }
 });
