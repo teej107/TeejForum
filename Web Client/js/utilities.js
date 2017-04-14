@@ -10,3 +10,8 @@ function getControllerDirectory()
 {
     return '/js/controller'
 }
+
+function loginHref(auth)
+{
+    return '/auth/google'
+}

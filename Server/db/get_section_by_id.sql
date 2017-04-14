@@ -1,0 +1,1 @@
+SELECT * FROM sections WHERE id = $1

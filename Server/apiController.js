@@ -46,6 +46,7 @@ module.exports = {
             if (validation)
                 return;
 
+            storage.sections.get()
             storage.threads.post(user, id, content).then((success) => res.send(success));
         }
     },
@@ -84,15 +85,51 @@ module.exports = {
             if (validation)
                 return;
 
-            storage.threads.create(id, user, title, body).then(
-                (success) =>
+            storage.sections.getById(sectionId).then((success) =>
+            {
+                storage.threads.create(id, user, title, body).then(
+                    (success) =>
+                    {
+                        res.send(success[0]);
+                    },
+                    (failure) =>
+                    {
+                        res.status(400).send(failure);
+                    });
+            });
+
+        }
+    },
+    canCreateThread: function (sectionId)
+    {
+        sectionId = sectionId.substring(1);
+        return (req, res) =>
+        {
+            var id = req.params[sectionId];
+            var userId = userIdFromReq(req);
+            var validation = utilities.validate((err) => err.sendResponse(res),
                 {
-                    res.send(success[0]);
-                },
-                (failure) =>
-                {
-                    res.status(400).send(failure);
+                    id: id,
+                    'user authentication id': userId
                 });
+
+            if (validation)
+                return;
+
+            console.log('getting user...');
+            storage.sections.getById(id).then((success) =>
+            {
+                var level = success[0].create_thread_level;
+                storage.users.getById(userId).then((user) =>
+                {
+                    var adminLevel = user[0].admin_level;
+                    if(!adminLevel)
+                    {
+                        adminLevel = 0;
+                    }
+                    res.send(level ? user.admin_level >= level : true)
+                });
+            });
         }
     },
     updateProfile: function ()

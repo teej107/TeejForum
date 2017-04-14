@@ -1,7 +1,7 @@
 /**
  * Created by tanner on 3/21/17.
  */
-var port = 3000;
+const port = 3000;
 
 var utilities = require('./utilities');
 var storage = require('./storage');
@@ -74,6 +74,7 @@ app.get('/api/section/' + arg, apiController.getThreadsBySectionId(arg));
 app.post('/api/section/' + arg, apiController.createThread(arg));
 app.get('/api/thread/' + arg, apiController.getThread(arg));
 app.post('/api/thread/' + arg, apiController.postToThread(arg));
+app.get('/api/permissions/section/' + arg, apiController.canCreateThread(arg));
 
 //For debugging
 app.get('*', htmlController.redirect('/index.html?bad=endpoint'));

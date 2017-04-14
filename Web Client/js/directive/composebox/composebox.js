@@ -9,34 +9,43 @@ app.directive('composebox', function ()
         scope: {
             thread: '='
         },
-        controller: function ($scope, apiService, authService)
+        controller: function ($scope, $window, apiService, authService)
         {
+            $scope.canPost = authService.getUser() !== null;
+            $scope.login = loginHref('google');
             $scope.submit = function ()
             {
-                apiService.postToThread($scope.thread.id, $scope.content).then(function (result)
+                if ($scope.canPost)
                 {
-                    if (result.error)
+                    apiService.postToThread($scope.thread.id, $scope.content).then(function (result)
                     {
-                        alert('unable to post :(');
-                        return;
-                    }
-                    var thread = $scope.thread;
-                    for (var key in thread)
-                    {
-                        if (thread.hasOwnProperty(key))
+                        if (result.error)
                         {
-                            delete thread[key];
+                            alert('unable to post :(');
+                            return;
                         }
-                    }
-                    for (var key in result)
-                    {
-                        if (result.hasOwnProperty(key))
+                        var thread = $scope.thread;
+                        for (var key in thread)
                         {
-                            thread[key] = result[key];
+                            if (thread.hasOwnProperty(key))
+                            {
+                                delete thread[key];
+                            }
                         }
-                    }
-                    $scope.content = "";
-                });
+                        for (var key in result)
+                        {
+                            if (result.hasOwnProperty(key))
+                            {
+                                thread[key] = result[key];
+                            }
+                        }
+                        $scope.content = "";
+                    });
+                }
+                else
+                {
+                    $window.location.href = loginHref('google');
+                }
             };
         }
     }

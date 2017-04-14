@@ -13,12 +13,19 @@ function sendThread(threadId)
     {
         db.get_thread([threadId], (err, thread) =>
         {
-            thread = thread[0];
-            db.get_thread_conversation([threadId], (err, conversation) =>
+            if (thread)
             {
-                thread.posts = conversation;
-                resolve(thread);
-            });
+                thread = thread[0];
+                db.get_thread_conversation([threadId], (err, conversation) =>
+                {
+                    thread.posts = conversation;
+                    resolve(thread);
+                });
+            }
+            else
+            {
+                resolve(null);
+            }
         })
     };
 }
@@ -80,6 +87,16 @@ module.exports = {
         },
         addAuth: addUserAuth,
         getByAuthId: getUserByAuthId,
+        getById: function (id)
+        {
+            return new Promise((resolve, reject) =>
+            {
+                db.get_user_by_id([id], function (err, record)
+                {
+                    resolve(record);
+                });
+            })
+        },
         updateProfile: function (id, tagname, firstname, lastname, avatar)
         {
             return new Promise((resolve, reject) =>
@@ -100,7 +117,8 @@ module.exports = {
                 {
                     resolve();
                 }));
-        },
+        }
+        ,
         get: function ()
         {
             return new Promise((resolve, reject) =>
@@ -108,7 +126,19 @@ module.exports = {
                 {
                     resolve(sections);
                 }));
-        },
+        }
+        ,
+        getById: function (sectionId)
+        {
+            return new Promise((resolve, reject) =>
+            {
+                db.get_section_by_id([sectionId], function (err, record)
+                {
+                    resolve(record);
+                })
+            })
+        }
+        ,
         getThreadsById: function (sectionId)
         {
             return new Promise((resolve, reject) =>
@@ -117,7 +147,8 @@ module.exports = {
                     resolve(threads);
                 }));
         }
-    },
+    }
+    ,
     threads: {
         post: function (user, threadId, content)
         {
@@ -131,12 +162,14 @@ module.exports = {
                     sendThread(threadId)(resolve, reject);
                 });
             });
-        },
+        }
+        ,
 
         getById: function (threadId)
         {
             return new Promise(sendThread(threadId));
-        },
+        }
+        ,
 
         create: function (sectionId, user, title, body)
         {
@@ -144,7 +177,7 @@ module.exports = {
             {
                 db.create_thread([sectionId, user, title, body], function (err, id)
                 {
-                    if(err)
+                    if (err)
                     {
                         reject(err);
                     }
@@ -156,4 +189,5 @@ module.exports = {
             });
         }
     }
-};
+}
+;

@@ -1,5 +1,5 @@
 <div>
-    <button id="create-thread" class="btn btn-primary" ui-sref="newthread({ section: '{{ section }}' })">Create Thread</button>
+    <button ng-show="canCreate()" id="create-thread" class="btn btn-primary" ui-sref="newthread({ section: '{{ section }}' })">Create Thread</button>
     <div class="well" ng-repeat="thread in threads">
         <a ui-sref="thread({id: '{{ thread.id }}' })">
             <h2>{{ thread.title }}</h2>

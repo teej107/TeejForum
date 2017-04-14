@@ -1,6 +1,9 @@
 <div class="composebox">
-    <form class="form-group" ng-submit="submit()">
+    <form class="form-group" ng-submit="submit()" ng-show="canPost">
         <textarea class="form-control" ng-model="content"></textarea>
         <button class="btn btn-primary" type="submit">Post</button>
     </form>
+    <div ng-hide="canPost">
+        <p>Please <a ng-click="submit()">login</a> to post</p>
+    </div>
 </div>

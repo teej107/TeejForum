@@ -23,7 +23,7 @@ app.directive('navbar', function ()
             });
             $scope.login = function ()
             {
-                $window.location.href = "/auth/google";
+                $window.location.href = loginHref('google');
             };
         }
     };
